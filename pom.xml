@@ -25,9 +25,9 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.10.8</version>
+            <groupId>com.networknt</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>1.0.69</version>
         </dependency>
     </dependencies>
 
@@ -41,10 +41,11 @@
             <plugin>
                 <groupId>org.jsonschema2pojo</groupId>
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                <version>1.1.1</version>
+                <version>1.1.2</version>
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/resources/</sourceDirectory>
                     <targetPackage>fr.ifpen.spectrum.ir.schema</targetPackage>
+                    <refFragmentPathDelimiters>#/</refFragmentPathDelimiters>
                 </configuration>
                 <executions>
                     <execution>
