@@ -19,7 +19,7 @@ public class SpcFileToAllotropeMapper {
 
         TransmittanceSpectrumDataCube transmittanceSpectrumDataCube = new TransmittanceSpectrumDataCube();
         transmittanceSpectrumDataCube.setLabel("Transmittance Data");
-        transmittanceSpectrumDataCube.setCubeStructure(new CubeStructure());
+        transmittanceSpectrumDataCube.setCubeStructure(GenerateDataCube());
         transmittanceSpectrumDataCube.setData(data);
 
         MeasurementDocument measurementDocument =
@@ -152,7 +152,11 @@ public class SpcFileToAllotropeMapper {
         List<Measure> measures = new ArrayList<>();
 
         Dimension firstDimension = new Dimension();
+        firstDimension.setConcept("length");
+
         Measure firstMeasure = new Measure();
+        firstMeasure.setConcept("relative intensity");
+        firstMeasure.setUnit("(unitless)");
 
         dimensions.add(firstDimension);
         measures.add(firstMeasure);
