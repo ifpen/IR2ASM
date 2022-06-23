@@ -39,6 +39,8 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <sonar.projectKey>Spectrum-IR</sonar.projectKey>
+        <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
     </properties>
 
     <build>
