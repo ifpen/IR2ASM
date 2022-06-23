@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfraredToAllotropeJsonConverter {
+    /**
+     * Converts a SPC IR file to an Allotrope-format compliant JSON.
+     * @param args Path to the file to convert.
+     */
     public static void main(String[] args){
         try {
             SpcFile spcFile = SpcFileParser.parseFile(args[0]);
