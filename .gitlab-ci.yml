@@ -54,8 +54,7 @@ sonar-quality:
     - mvn sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.java.binaries=target
     - module unload Java/11.0.2
   allow_failure: true
-  dependencies:
-    - test
+
 
 
 deploy-job:      # This job runs in the deploy stage.
