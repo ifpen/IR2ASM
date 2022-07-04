@@ -1,28 +1,27 @@
 package fr.ifpen.spectrum.ir;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllotropeData {
     public List<List<Double>> getDimensions() {
-        return Dimensions;
+        return dimensions;
     }
 
     public void setDimensions(List<List<Double>> dimensions) {
-        Dimensions = dimensions;
+        this.dimensions = dimensions;
     }
 
     public List<List<Double>> getMeasures() {
-        return Measures;
+        return measures;
     }
 
     public void setMeasures(List<List<Double>> measures) {
-        Measures = measures;
+        this.measures = measures;
     }
 
     public AllotropeData() {
     }
 
-    private List<List<Double>> Dimensions;
-    private List<List<Double>> Measures;
+    private List<List<Double>> dimensions;
+    private List<List<Double>> measures;
 }

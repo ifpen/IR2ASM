@@ -12,6 +12,8 @@ import java.util.List;
 
 import static fr.ifpen.spectrum.ir.parser.Utility.readCharacters;
 
+@SuppressWarnings("UnstableApiUsage")
+
 public class SpcDataParser {
     List<Double> xArray;
     SpcFileHeader header;
@@ -29,7 +31,7 @@ public class SpcDataParser {
             xArray = createEquidistantXValues(header.startingX, header.endingX, header.pointCount);
         }
 
-        List<SpcFileSpectrum> dataBlocks = new ArrayList<SpcFileSpectrum>();
+        List<SpcFileSpectrum> dataBlocks = new ArrayList<>();
 
         for(int i = 0; i < header.subfileCount; i++){
             SpcFileSpectrum spectrum = parseSpectrum();
@@ -40,7 +42,7 @@ public class SpcDataParser {
     }
 
     private List<Double> createEquidistantXValues(double startingX, double endingX, long pointCount){
-        List<Double> x = new ArrayList<Double>((int) pointCount);
+        List<Double> x = new ArrayList<>((int) pointCount);
         double step = (endingX - startingX) / (pointCount - 1);
         for (int i = 0; i < pointCount; i++){
             x.add(startingX + i * step);

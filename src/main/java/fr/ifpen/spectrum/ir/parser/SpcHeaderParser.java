@@ -4,7 +4,9 @@ import com.google.common.io.LittleEndianDataInputStream;
 import fr.ifpen.spectrum.ir.SpcFileHeader;
 import fr.ifpen.spectrum.ir.flags.*;
 
-import java.util.EnumSet;
+import java.util.Set;
+
+@SuppressWarnings("UnstableApiUsage")
 
 public class SpcHeaderParser {
     public static SpcFileHeader parseHeader(LittleEndianDataInputStream inputStream) throws Exception {
@@ -16,9 +18,9 @@ public class SpcHeaderParser {
         double startingX = inputStream.readDouble();
         double endingX = inputStream.readDouble();
         int subfileCount = inputStream.readInt();
-        int XUnitFlag = inputStream.readUnsignedByte();
-        int YUnitFlag = inputStream.readUnsignedByte();
-        int ZUnitFlag = inputStream.readUnsignedByte();
+        int xUnitFlag = inputStream.readUnsignedByte();
+        int yUnitFlag = inputStream.readUnsignedByte();
+        int zUnitFlag = inputStream.readUnsignedByte();
         inputStream.readUnsignedByte(); //Fpost - "Do not use when creating data file conversion routines should normally be set to null." - Ignoring this parameter here.
         inputStream.readInt(); //Fdate - In all the test data set to 0. TODO: Implement this feature
         String resolutionDescription = Utility.readCharacters(inputStream, 9); //Length fixed in format documentation.
@@ -45,7 +47,7 @@ public class SpcHeaderParser {
         int wAxisFlag = inputStream.readUnsignedByte();
         Utility.readCharacters(inputStream, 187); //Freserv - "Do not write any data in this area."
 
-        EnumSet<SpcFileFeatureEnum> features = Utility.getDataFlags(featureFlag);
+        Set<SpcFileFeatureEnum> features = Utility.getDataFlags(featureFlag);
 
         return new SpcFileHeader(
                 Utility.GetEnumFromFlag(versionFlag, SpcFileVersionEnum.class),
@@ -56,9 +58,9 @@ public class SpcHeaderParser {
                 startingX,
                 endingX,
                 subfileCount,
-                Utility.GetEnumFromFlag(XUnitFlag, SpcFileXUnitLabelEnum.class),
-                Utility.GetEnumFromFlag(YUnitFlag, SpcFileYUnitLabelEnum.class),
-                Utility.GetEnumFromFlag(ZUnitFlag, SpcFileXUnitLabelEnum.class),
+                Utility.GetEnumFromFlag(xUnitFlag, SpcFileXUnitLabelEnum.class),
+                Utility.GetEnumFromFlag(yUnitFlag, SpcFileYUnitLabelEnum.class),
+                Utility.GetEnumFromFlag(zUnitFlag, SpcFileXUnitLabelEnum.class),
                 resolutionDescription,
                 sourceInstrument,
                 peakNumberPoint,

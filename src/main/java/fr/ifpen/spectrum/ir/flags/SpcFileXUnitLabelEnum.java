@@ -34,8 +34,8 @@ public enum SpcFileXUnitLabelEnum implements  FlagEnumInterface{
     XHOURS(30, "Hours"),
     XDBLIGM(255, "Double interferogram (no display labels)");
 
-    private int flagValue;
-    private String description;
+    private final int flagValue;
+    private final String description;
 
     SpcFileXUnitLabelEnum(int flagValue, String description) {
 

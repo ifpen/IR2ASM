@@ -2,11 +2,11 @@ package fr.ifpen.spectrum.ir;
 
 import fr.ifpen.spectrum.ir.flags.*;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 public class SpcFileHeader {
     public final SpcFileVersionEnum fileVersion;
-    public final EnumSet<SpcFileFeatureEnum> features;
+    public final Set<SpcFileFeatureEnum> features;
     public final SpcExperimentTypeEnum experimentType;
     public final int exponentY;
     public final long pointCount;
@@ -25,7 +25,7 @@ public class SpcFileHeader {
 
     public SpcFileHeader(
             SpcFileVersionEnum fileVersion,
-            EnumSet<SpcFileFeatureEnum> features,
+            Set<SpcFileFeatureEnum> features,
             SpcExperimentTypeEnum experimentType,
             int exponentY,
             long pointCount,

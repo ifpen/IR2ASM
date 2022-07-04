@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
+
 public class SpcSpectrumParser {
     List<Double> xArray;
     SpcFileHeader header;
@@ -62,7 +64,7 @@ public class SpcSpectrumParser {
     }
 
     private List<Double> read16BitYData(int pointCount, double yFactor) throws IOException {
-        List<Double> y = new ArrayList<Double>(pointCount);
+        List<Double> y = new ArrayList<>(pointCount);
         for (int i = 0; i < pointCount; i++){
             y.add(inputStream.readShort() * yFactor);
         }
@@ -70,7 +72,7 @@ public class SpcSpectrumParser {
     }
 
     private List<Double> read32BitYData(int pointCount, double yFactor, long yExponent) throws IOException {
-        List<Double> y = new ArrayList<Double>(pointCount);
+        List<Double> y = new ArrayList<>(pointCount);
         for (int i = 0; i < pointCount; i++){
             if(yExponent != -128){
                 y.add(inputStream.readShort() * yFactor);
@@ -82,7 +84,7 @@ public class SpcSpectrumParser {
     }
 
     private List<DataPoint> buildDataPoints(List<Double> xArray, List<Double> yArray, int pointCount){
-        List<DataPoint> dataPointList = new ArrayList<DataPoint>(pointCount);
+        List<DataPoint> dataPointList = new ArrayList<>(pointCount);
 
         for(int i = 0; i < pointCount; i++){
             dataPointList.add(new DataPoint(xArray.get(i), yArray.get(i)));

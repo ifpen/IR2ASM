@@ -6,6 +6,9 @@ import fr.ifpen.spectrum.ir.flags.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Set;
+
+@SuppressWarnings("UnstableApiUsage")
 
 public class Utility {
     public static String readCharacters(LittleEndianDataInputStream in, int numberOfCharacters) throws IOException {
@@ -18,8 +21,8 @@ public class Utility {
         return stringBuilder.toString();
     }
 
-    public static EnumSet<SpcFileFeatureEnum> getDataFlags(long fileFlagValue) {
-        EnumSet dataFlags = EnumSet.noneOf(SpcFileFeatureEnum.class);
+    public static Set<SpcFileFeatureEnum> getDataFlags(long fileFlagValue) {
+        EnumSet<SpcFileFeatureEnum> dataFlags = EnumSet.noneOf(SpcFileFeatureEnum.class);
         for (SpcFileFeatureEnum featureFlag : SpcFileFeatureEnum.values()) {
             long flagValue = featureFlag.GetFlagValue();
             if ((flagValue & fileFlagValue) == flagValue){
@@ -39,7 +42,7 @@ public class Utility {
     }
 
     public static ArrayList<Double> readXValuesFromFile(LittleEndianDataInputStream inputStream, long pointCount) throws IOException {
-        ArrayList<Double> x = new ArrayList<Double>((int) pointCount);
+        ArrayList<Double> x = new ArrayList<>((int) pointCount);
         for(int i = 0; i < pointCount; i++){
             x.add((double) inputStream.readFloat());
         }

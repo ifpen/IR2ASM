@@ -11,7 +11,6 @@ import java.util.EnumSet;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpcFileParserTests {
 
-    private String filePath;
     private SpcFile file;
 
     @BeforeAll
@@ -22,7 +21,7 @@ class SpcFileParserTests {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        filePath = Paths.get(uri).toString();
+        String filePath = Paths.get(uri).toString();
 
         try {
             file = SpcFileParser.parseFile(filePath);
