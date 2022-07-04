@@ -24,7 +24,6 @@ import java.util.Set;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SpcFileToAllotropeMapperTests {
 
-    private String filePath;
     private SpcFile file;
 
     @BeforeAll
@@ -35,7 +34,7 @@ public class SpcFileToAllotropeMapperTests {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        filePath = Paths.get(uri).toString();
+        String filePath = Paths.get(uri).toString();
 
         try {
             file = SpcFileParser.parseFile(filePath);

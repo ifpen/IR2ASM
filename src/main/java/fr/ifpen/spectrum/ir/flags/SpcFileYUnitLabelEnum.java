@@ -35,8 +35,8 @@ public enum SpcFileYUnitLabelEnum implements  FlagEnumInterface{
     YEMISN(131, "Emission");
 
 
-    private int flagValue;
-    private String description;
+    private final int flagValue;
+    private final String description;
 
     SpcFileYUnitLabelEnum(int flagValue, String description) {
 

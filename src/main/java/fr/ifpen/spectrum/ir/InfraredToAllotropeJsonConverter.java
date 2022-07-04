@@ -11,7 +11,7 @@ import java.util.List;
 
 public class InfraredToAllotropeJsonConverter {
     /**
-     * Converts a SPC IR file to an Allotrope-format compliant JSON.
+     * Converts an SPC IR file to an Allotrope-format compliant JSON.
      * @param args Path to the file to convert.
      */
     public static void main(String[] args){
@@ -21,9 +21,9 @@ public class InfraredToAllotropeJsonConverter {
 
             ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-            spcFile.dataBlocks.forEach(spcFileSpectrum -> {
-                embedSchemaList.add(SpcFileToAllotropeMapper.mapToFtirEmbedSchema(spcFile.header, spcFileSpectrum));
-            });
+            spcFile.dataBlocks.forEach(spcFileSpectrum ->
+                embedSchemaList.add(SpcFileToAllotropeMapper.mapToFtirEmbedSchema(spcFile.header, spcFileSpectrum))
+            );
 
             embedSchemaList.forEach(ftirEmbedSchema -> {
                 try {
