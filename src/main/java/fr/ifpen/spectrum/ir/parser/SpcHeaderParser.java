@@ -22,7 +22,7 @@ public class SpcHeaderParser {
         int yUnitFlag = inputStream.readUnsignedByte();
         int zUnitFlag = inputStream.readUnsignedByte();
         inputStream.readUnsignedByte(); //Fpost - "Do not use when creating data file conversion routines should normally be set to null." - Ignoring this parameter here.
-        inputStream.readInt(); //Fdate - In all the test data set to 0. TODO: Implement this feature
+        int date = inputStream.readInt(); //Fdate - In all the test data set to 0. TODO: Implement this feature
         String resolutionDescription = Utility.readCharacters(inputStream, 9); //Length fixed in format documentation.
         String sourceInstrument = Utility.readCharacters(inputStream, 9); //Length fixed in format documentation.
         int peakNumberPoint = inputStream.readUnsignedShort();

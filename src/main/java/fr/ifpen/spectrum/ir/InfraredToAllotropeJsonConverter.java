@@ -27,7 +27,7 @@ public class InfraredToAllotropeJsonConverter {
 
             embedSchemaList.forEach(ftirEmbedSchema -> {
                 try {
-                    mapper.writeValue(new File(args[0].replace(".spc", ".json")), embedSchemaList);
+                    mapper.writeValue(new File(args[0].replace(".spc", ".json")), ftirEmbedSchema);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
