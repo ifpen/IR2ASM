@@ -7,7 +7,6 @@ import fr.ifpen.spectrum.ir.SpcFileHeader;
 import fr.ifpen.spectrum.ir.SpcFileSpectrum;
 import fr.ifpen.spectrum.ir.flags.SpcFileFeatureEnum;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,9 @@ import java.util.List;
 
 public class SpcSpectrumParser {
     List<Double> xArray;
-    SpcFileHeader header;
-    SpcFileDataSubHeader subHeader;
-    LittleEndianDataInputStream inputStream;
+    final SpcFileHeader header;
+    final SpcFileDataSubHeader subHeader;
+    final LittleEndianDataInputStream inputStream;
 
     public SpcSpectrumParser(
             LittleEndianDataInputStream inputStream,
@@ -32,15 +31,15 @@ public class SpcSpectrumParser {
     }
 
     public SpcFileSpectrum parseSpectrum() throws IOException {
-        if(header.features.contains(SpcFileFeatureEnum.xyDifferentArray)){
-            xArray = Utility.readXValuesFromFile(inputStream, subHeader.pointCount);
+        if(header.features().contains(SpcFileFeatureEnum.XY_DIFFERENT_ARRAY)){
+            xArray = Utility.readXValuesFromFile(inputStream, subHeader.pointCount());
         }
 
-        int yExponent = subHeader.exponentY == 0 ? header.exponentY : subHeader.exponentY;
+        int yExponent = subHeader.exponentY() == 0 ? header.exponentY() : subHeader.exponentY();
 
         double yFactor = calculateYFactor(yExponent);
 
-        long pointCount = subHeader.pointCount == 0 ? header.pointCount : subHeader.pointCount;
+        long pointCount = subHeader.pointCount() == 0 ? header.pointCount() : subHeader.pointCount();
 
         List<Double> yArray = readYData((int) pointCount, yFactor, yExponent);
 
@@ -50,13 +49,13 @@ public class SpcSpectrumParser {
     }
 
     private double calculateYFactor(long yExponent){
-        long offsetExponent = yExponent - (header.features.contains(SpcFileFeatureEnum.y16BitPrecision) ? 16 : 32);
+        long offsetExponent = yExponent - (header.features().contains(SpcFileFeatureEnum.Y_16_BIT_PRECISION) ? 16 : 32);
 
         return Math.pow(2, offsetExponent);
     }
 
     private List<Double> readYData(int pointCount, double yFactor, long yExponent) throws IOException {
-        if (header.features.contains(SpcFileFeatureEnum.y16BitPrecision)){
+        if (header.features().contains(SpcFileFeatureEnum.Y_16_BIT_PRECISION)){
             return read16BitYData(pointCount, yFactor);
         } else {
             return read32BitYData(pointCount, yFactor, yExponent);

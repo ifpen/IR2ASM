@@ -45,7 +45,7 @@ public enum SpcFileYUnitLabelEnum implements  FlagEnumInterface{
     }
 
     @Override
-    public long GetFlagValue() {
+    public long getFlagValue() {
         return this.flagValue;
     }
 }

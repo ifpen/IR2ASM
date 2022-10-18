@@ -2,8 +2,6 @@ package fr.ifpen.spectrum.ir;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
@@ -14,40 +12,32 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Set;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SpcFileToAllotropeMapperTests {
+class SpcFileToAllotropeMapperTests {
 
     private SpcFile file;
 
     @BeforeAll
     void setFilePath(){
-        URI uri = null;
-        try {
-            uri = SpcFileParserTests.class.getClassLoader().getResource("201bk01.spc").toURI();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        String filePath = Paths.get(uri).toString();
+
+        File testFile = new File("src/test/resources/201bk01.spc");
 
         try {
-            file = SpcFileParser.parseFile(filePath);
+            file = SpcFileParser.parseFile(testFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    void mappingWorks() throws IOException {
+    void mappingWorks() {
         FtirEmbedSchema embedSchema = SpcFileToAllotropeMapper.mapToFtirEmbedSchema(
-                file.header,
-                file.dataBlocks.get(0));
+                file.dataBlocks().get(0));
 
         JsonSchema referenceSchema = getJsonSchemaFromClasspath("ftir.embed.schema.json");
 
@@ -55,7 +45,7 @@ public class SpcFileToAllotropeMapperTests {
         JsonNode node = objectMapper.valueToTree(embedSchema);
 
         Set<ValidationMessage> errors = referenceSchema.validate(node);
-        Assertions.assertEquals(errors.size(),0);
+        Assertions.assertTrue(errors.isEmpty());
     }
 
     private JsonSchema getJsonSchemaFromClasspath(String name) {

@@ -2,7 +2,6 @@ package fr.ifpen.spectrum.ir;
 
 import fr.ifpen.spectrum.ir.schema.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -11,30 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpcFileToAllotropeMapper {
-    public static FtirEmbedSchema mapToFtirEmbedSchema(
-            SpcFileHeader spcFileHeader,
-            SpcFileSpectrum spcFileSpectrum){
 
-        AllotropeData data = CreateAllotropeDataFromSpcSpectrum(spcFileSpectrum);
+    private static final String UNITLESS = "(unitless)";
+
+    private SpcFileToAllotropeMapper(){}
+    public static FtirEmbedSchema mapToFtirEmbedSchema(SpcFileSpectrum spcFileSpectrum){
+
+        AllotropeData data = createAllotropeDataFromSpcSpectrum(spcFileSpectrum);
 
         TransmittanceSpectrumDataCube transmittanceSpectrumDataCube = new TransmittanceSpectrumDataCube();
         transmittanceSpectrumDataCube.setLabel("Transmittance Data");
-        transmittanceSpectrumDataCube.setCubeStructure(GenerateDataCube());
+        transmittanceSpectrumDataCube.setCubeStructure(generateDataCube());
         transmittanceSpectrumDataCube.setData(data);
 
         MeasurementDocument measurementDocument =
-                CreateMeasurementDocument(transmittanceSpectrumDataCube);
+                createMeasurementDocument(transmittanceSpectrumDataCube);
 
         FourierTransformInfraredDocument fourierTransformInfraredDocument=
-                CreateFourierTransformInfraredDocument(measurementDocument);
+                createFourierTransformInfraredDocument(measurementDocument);
 
-        return CreateFtirFile(fourierTransformInfraredDocument);
+        return createFtirFile(fourierTransformInfraredDocument);
     }
 
-    private static AllotropeData CreateAllotropeDataFromSpcSpectrum
+    private static AllotropeData createAllotropeDataFromSpcSpectrum
             (SpcFileSpectrum spcFileSpectrum){
-
-        AllotropeData data = new AllotropeData();
 
         List<List<Double>> dimensions = new ArrayList<>();
         List<List<Double>> measures = new ArrayList<>();
@@ -42,29 +41,26 @@ public class SpcFileToAllotropeMapper {
         List<Double> firstDimension = new ArrayList<>();
         List<Double> firstMeasure = new ArrayList<>();
 
-        for (DataPoint datapoint: spcFileSpectrum.dataPoints) {
-            firstDimension.add(datapoint.x);
-            firstMeasure.add(datapoint.y);
+        for (DataPoint datapoint: spcFileSpectrum.dataPoints()) {
+            firstDimension.add(datapoint.x());
+            firstMeasure.add(datapoint.y());
         }
 
         dimensions.add(firstDimension);
         measures.add(firstMeasure);
 
-        data.setDimensions(dimensions);
-        data.setMeasures(measures);
-
-        return data;
+        return new AllotropeData(dimensions, measures);
     }
 
-    private static MeasurementDocument CreateMeasurementDocument(
+    private static MeasurementDocument createMeasurementDocument(
             TransmittanceSpectrumDataCube transmittanceSpectrumDataCube)
     {
         MeasurementDocument measurementDocument = new MeasurementDocument();
-        measurementDocument.setOpticalVelocitySetting(GenerateDefaultOpticalVelocitySetting());
-        measurementDocument.setResolution(GenerateDefaultResolution());
-        measurementDocument.setNumberOfAverages(GenerateDefaultNumberOfAverages());
-        measurementDocument.setApertureSizeSetting(GenerateDefaultApertureSizeSetting());
-        measurementDocument.setDetectorGainSetting(GenerateDefaultDetectorGainSetting());
+        measurementDocument.setOpticalVelocitySetting(generateDefaultOpticalVelocitySetting());
+        measurementDocument.setResolution(generateDefaultResolution());
+        measurementDocument.setNumberOfAverages(generateDefaultNumberOfAverages());
+        measurementDocument.setApertureSizeSetting(generateDefaultApertureSizeSetting());
+        measurementDocument.setDetectorGainSetting(generateDefaultDetectorGainSetting());
         measurementDocument.setTransmittanceSpectrumDataCube(transmittanceSpectrumDataCube);
         measurementDocument.setInfraredInterferogramDataCube(new InfraredInterferogramDataCube());
         measurementDocument.setReflectanceSpectrumDataCube(new ReflectanceSpectrumDataCube());
@@ -73,7 +69,7 @@ public class SpcFileToAllotropeMapper {
         return measurementDocument;
     }
 
-    private static FourierTransformInfraredDocument CreateFourierTransformInfraredDocument(
+    private static FourierTransformInfraredDocument createFourierTransformInfraredDocument(
             MeasurementDocument measurementDocument){
         FourierTransformInfraredDocument fourierTransformInfraredDocument =
                 new FourierTransformInfraredDocument();
@@ -82,7 +78,7 @@ public class SpcFileToAllotropeMapper {
         return fourierTransformInfraredDocument;
     }
 
-    private static FtirEmbedSchema CreateFtirFile(
+    private static FtirEmbedSchema createFtirFile(
             FourierTransformInfraredDocument fourierTransformInfraredDocument){
         ZonedDateTime defaultTime =
                 LocalDateTime.of(1970,1,1,0,0,0)
@@ -101,7 +97,7 @@ public class SpcFileToAllotropeMapper {
         return ftir;
     }
 
-    private static OpticalVelocitySetting GenerateDefaultOpticalVelocitySetting(){
+    private static OpticalVelocitySetting generateDefaultOpticalVelocitySetting(){
         OpticalVelocitySetting defaultOpticalVelocitySetting = new OpticalVelocitySetting();
         defaultOpticalVelocitySetting.setUnit("cm/s");
         defaultOpticalVelocitySetting.setType("");
@@ -110,7 +106,7 @@ public class SpcFileToAllotropeMapper {
         return defaultOpticalVelocitySetting;
     }
 
-    private static Resolution GenerateDefaultResolution(){
+    private static Resolution generateDefaultResolution(){
         Resolution defaultResolution = new Resolution();
         defaultResolution.setUnit("1/cm");
         defaultResolution.setType("");
@@ -119,16 +115,16 @@ public class SpcFileToAllotropeMapper {
         return defaultResolution;
     }
 
-    private static NumberOfAverages GenerateDefaultNumberOfAverages(){
+    private static NumberOfAverages generateDefaultNumberOfAverages(){
         NumberOfAverages defaultNumberOfAverages = new NumberOfAverages();
-        defaultNumberOfAverages.setUnit("(unitless)");
+        defaultNumberOfAverages.setUnit(UNITLESS);
         defaultNumberOfAverages.setType("");
         defaultNumberOfAverages.setValue((double) 0);
 
         return defaultNumberOfAverages;
     }
 
-    private static ApertureSizeSetting GenerateDefaultApertureSizeSetting(){
+    private static ApertureSizeSetting generateDefaultApertureSizeSetting(){
         ApertureSizeSetting defaultApertureSizeSetting = new ApertureSizeSetting();
         defaultApertureSizeSetting.setUnit("nm");
         defaultApertureSizeSetting.setType("");
@@ -137,16 +133,16 @@ public class SpcFileToAllotropeMapper {
         return  defaultApertureSizeSetting;
     }
 
-    private static DetectorGainSetting GenerateDefaultDetectorGainSetting(){
+    private static DetectorGainSetting generateDefaultDetectorGainSetting(){
         DetectorGainSetting defaultDetectorGainSetting = new DetectorGainSetting();
-        defaultDetectorGainSetting.setUnit("(unitless)");
+        defaultDetectorGainSetting.setUnit(UNITLESS);
         defaultDetectorGainSetting.setType("");
         defaultDetectorGainSetting.setValue((double) 0);
 
         return  defaultDetectorGainSetting;
     }
 
-    private static CubeStructure GenerateDataCube(){
+    private static CubeStructure generateDataCube(){
         CubeStructure dataCube = new CubeStructure();
         List<Dimension> dimensions = new ArrayList<>();
         List<Measure> measures = new ArrayList<>();
@@ -156,7 +152,7 @@ public class SpcFileToAllotropeMapper {
 
         Measure firstMeasure = new Measure();
         firstMeasure.setConcept("relative intensity");
-        firstMeasure.setUnit("(unitless)");
+        firstMeasure.setUnit(UNITLESS);
 
         dimensions.add(firstDimension);
         measures.add(firstMeasure);

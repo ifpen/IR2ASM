@@ -16,13 +16,14 @@ public class InfraredToAllotropeJsonConverter {
      */
     public static void main(String[] args){
         try {
-            SpcFile spcFile = SpcFileParser.parseFile(args[0]);
+            File inputFile = new File(args[0]);
+            SpcFile spcFile = SpcFileParser.parseFile(inputFile);
             List<FtirEmbedSchema> embedSchemaList = new ArrayList<>();
 
             ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-            spcFile.dataBlocks.forEach(spcFileSpectrum ->
-                embedSchemaList.add(SpcFileToAllotropeMapper.mapToFtirEmbedSchema(spcFile.header, spcFileSpectrum))
+            spcFile.dataBlocks().forEach(spcFileSpectrum ->
+                embedSchemaList.add(SpcFileToAllotropeMapper.mapToFtirEmbedSchema(spcFileSpectrum))
             );
 
             embedSchemaList.forEach(ftirEmbedSchema -> {

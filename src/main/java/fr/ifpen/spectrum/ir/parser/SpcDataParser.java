@@ -16,8 +16,8 @@ import static fr.ifpen.spectrum.ir.parser.Utility.readCharacters;
 
 public class SpcDataParser {
     List<Double> xArray;
-    SpcFileHeader header;
-    LittleEndianDataInputStream inputStream;
+    final SpcFileHeader header;
+    final LittleEndianDataInputStream inputStream;
 
     public SpcDataParser(LittleEndianDataInputStream inputStream, SpcFileHeader header) {
         this.inputStream = inputStream;
@@ -25,15 +25,15 @@ public class SpcDataParser {
     }
 
     public List<SpcFileSpectrum> parseDataBlock() throws IOException {
-        if(header.features.contains(SpcFileFeatureEnum.xyDifferentArray)){
-            xArray = Utility.readXValuesFromFile(inputStream, header.pointCount);
-        } else if (!header.features.contains(SpcFileFeatureEnum.xy)){
-            xArray = createEquidistantXValues(header.startingX, header.endingX, header.pointCount);
+        if(header.features().contains(SpcFileFeatureEnum.XY_DIFFERENT_ARRAY)){
+            xArray = Utility.readXValuesFromFile(inputStream, header.pointCount());
+        } else if (!header.features().contains(SpcFileFeatureEnum.XY)){
+            xArray = createEquidistantXValues(header.startingX(), header.endingX(), header.pointCount());
         }
 
         List<SpcFileSpectrum> dataBlocks = new ArrayList<>();
 
-        for(int i = 0; i < header.subfileCount; i++){
+        for(int i = 0; i < header.subfileCount(); i++){
             SpcFileSpectrum spectrum = parseSpectrum();
             dataBlocks.add(spectrum);
         }

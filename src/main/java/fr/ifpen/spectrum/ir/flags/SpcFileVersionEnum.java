@@ -12,7 +12,7 @@ public enum SpcFileVersionEnum implements  FlagEnumInterface {
     }
 
     @Override
-    public long GetFlagValue() {
+    public long getFlagValue() {
         return this.versionFlag;
     }
 }

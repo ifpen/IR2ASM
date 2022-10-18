@@ -4,12 +4,18 @@ import com.google.common.io.LittleEndianDataInputStream;
 import fr.ifpen.spectrum.ir.SpcFileHeader;
 import fr.ifpen.spectrum.ir.flags.*;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.Set;
 
 @SuppressWarnings("UnstableApiUsage")
 
 public class SpcHeaderParser {
-    public static SpcFileHeader parseHeader(LittleEndianDataInputStream inputStream) throws Exception {
+
+    private SpcHeaderParser(){}
+
+    public static SpcFileHeader parseHeader(
+            LittleEndianDataInputStream inputStream, Instant fileLastModifiedDate) throws IOException {
         int featureFlag = inputStream.readUnsignedByte();
         int versionFlag = inputStream.readUnsignedByte();
         int experimentTypeFlag = inputStream.readUnsignedByte();
@@ -22,12 +28,12 @@ public class SpcHeaderParser {
         int yUnitFlag = inputStream.readUnsignedByte();
         int zUnitFlag = inputStream.readUnsignedByte();
         inputStream.readUnsignedByte(); //Fpost - "Do not use when creating data file conversion routines should normally be set to null." - Ignoring this parameter here.
-        int date = inputStream.readInt(); //Fdate - In all the test data set to 0. TODO: Implement this feature
+        int intDate = inputStream.readInt(); //Fdate - In all the test data set to 0.
         String resolutionDescription = Utility.readCharacters(inputStream, 9); //Length fixed in format documentation.
         String sourceInstrument = Utility.readCharacters(inputStream, 9); //Length fixed in format documentation.
         int peakNumberPoint = inputStream.readUnsignedShort();
 
-        for (int i = 0; i < 8; i++) { //Skipping 8 floats of spare, not used in the test data. TODO: Implement this feature.
+        for (int i = 0; i < 8; i++) { //Skipping 8 floats of spare, not used in the test data.
             inputStream.readFloat();
         }
 
@@ -41,26 +47,27 @@ public class SpcHeaderParser {
         inputStream.readUnsignedShort(); //Fsampin - "For Galactic internal use only; do not use. Must be set to null."
         inputStream.readFloat(); //Ffactor - "For Galactic internal use only; do not use. Must be set to null."
         Utility.readCharacters(inputStream, 48); //Fmethod - "For Galactic internal use only; do not use. Must be set to null."
-        double zIncrement = inputStream.readFloat();
-        int wPlanes = inputStream.readInt();
-        double wIncrement = inputStream.readFloat();
-        int wAxisFlag = inputStream.readUnsignedByte();
+        inputStream.readFloat(); //ZIncrement - Not used in the model.
+        inputStream.readInt(); //wPlanes - Not used in the model.
+        inputStream.readFloat(); //wIncrement - Not used in the model.
+        inputStream.readUnsignedByte(); //wAxisFlag - Not used in the model.
         Utility.readCharacters(inputStream, 187); //Freserv - "Do not write any data in this area."
 
         Set<SpcFileFeatureEnum> features = Utility.getDataFlags(featureFlag);
 
         return new SpcFileHeader(
-                Utility.GetEnumFromFlag(versionFlag, SpcFileVersionEnum.class),
+                Utility.getEnumFromFlag(versionFlag, SpcFileVersionEnum.class),
                 features,
-                Utility.GetEnumFromFlag(experimentTypeFlag, SpcExperimentTypeEnum.class),
+                Utility.getEnumFromFlag(experimentTypeFlag, SpcExperimentTypeEnum.class),
                 exponent,
                 numberOfPoints,
                 startingX,
                 endingX,
                 subfileCount,
-                Utility.GetEnumFromFlag(xUnitFlag, SpcFileXUnitLabelEnum.class),
-                Utility.GetEnumFromFlag(yUnitFlag, SpcFileYUnitLabelEnum.class),
-                Utility.GetEnumFromFlag(zUnitFlag, SpcFileXUnitLabelEnum.class),
+                Utility.getEnumFromFlag(xUnitFlag, SpcFileXUnitLabelEnum.class),
+                Utility.getEnumFromFlag(yUnitFlag, SpcFileYUnitLabelEnum.class),
+                Utility.getEnumFromFlag(zUnitFlag, SpcFileXUnitLabelEnum.class),
+                parseDate(intDate, fileLastModifiedDate),
                 resolutionDescription,
                 sourceInstrument,
                 peakNumberPoint,
@@ -69,4 +76,17 @@ public class SpcHeaderParser {
                 xyzLabels
                 );
     }
+
+private static Instant parseDate(int intDate, Instant fileDate){
+    try{
+        if(intDate == 0){
+            return fileDate;
+        } else {
+            throw new IllegalArgumentException("Date parsing not implementing, please file an incident");
+        }
+    } catch (IllegalArgumentException e){
+        return Instant.ofEpochSecond(0);
+    }
+}
+
 }

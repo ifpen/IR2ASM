@@ -1,5 +1,5 @@
 package fr.ifpen.spectrum.ir.flags;
 
 public interface FlagEnumInterface {
-    long GetFlagValue();
+    long getFlagValue();
 }
