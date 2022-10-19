@@ -2,6 +2,12 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
 
+default:
+  image: maven:3.8.6-eclipse-temurin-17-alpine
+  tags:
+    - shared
+
+
 cache:
   paths:
     - .m2/repository/
@@ -17,29 +23,21 @@ stages:          # List of stages for jobs, and their order of execution
 build:
   stage: build
   script:
-    - module load Java/11.0.2
     - mvn $MAVEN_CLI_OPTS compile
-    - module unload Java/11.0.2
 
 test:
   stage: test
   script:
-    - module load Java/11.0.2
     - mvn $MAVEN_CLI_OPTS test
-    - module unload Java/11.0.2
 
 lint:
   stage: test
   script:
-    - module load Java/11.0.2
     - mvn verify sonar:sonar -Dsonar.projectKey=spectrum-GC -Dsonar.java.binaries=target
-    - module unload Java/11.0.2
 
 deploy:
   stage: deploy
   script:
-    - module load Java/11.0.2
     - mvn $MAVEN_CLI_OPTS deploy
-    - module unload Java/11.0.2
   only:
     - main
