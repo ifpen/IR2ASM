@@ -51,7 +51,7 @@ test:
 lint:
   stage: test
   script:
-    - mvn verify sonar:sonar -Dsonar.projectKey=spectrum-GC -Dsonar.java.binaries=target
+    - mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dsonar.projectKey=spectrum-IR -Dsonar.java.binaries=target
 
 deploy:
   stage: deploy
