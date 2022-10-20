@@ -4,6 +4,9 @@ variables:
     -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
     -Dorg.slf4j.simpleLogger.showDateTime=true
     -Djava.awt.headless=true
+    -DproxySet=true
+    -DproxyHost=isproxy
+    -DproxyPort=8082
 
   MAVEN_CLI_OPTS: >-
     --batch-mode
