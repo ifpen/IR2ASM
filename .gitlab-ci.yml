@@ -56,7 +56,7 @@ lint:
 deploy:
   stage: deploy
   script:
-    - echo quit | openssl s_client -showcerts -servername gitlabpremium.ifpen.fr -connect gitlabpremium.ifpen.fr:443 2>/dev/null | awk '/BEGIN/,/END/{ if(/BEGIN/){c=""};c=c $0 "\n"}END{print c}' >ca.crt || true
+    - echo quit | openssl s_client -showcerts -servername gitlabpremium.ifpen.fr -connect gitlabpremium.ifpen.fr:443 2>/dev/null >ca.crt || true
     - keytool -importcert -noprompt -trustcacerts -alias artifactory -file ca.crt -keystore local -storepass changeit
     - mvn $MAVEN_CLI_OPTS deploy
   only:
