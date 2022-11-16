@@ -21,7 +21,7 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
 
 default:
-  image: maven:3.8.6-eclipse-temurin-17-alpine
+  image: maven:3.8.6-eclipse-temurin-17
   tags:
     - shared
 
@@ -57,7 +57,6 @@ deploy:
   stage: deploy
   script:
     - echo quit | openssl s_client -showcerts -servername gitlabpremium.ifpen.fr -connect gitlabpremium.ifpen.fr:443 2>/dev/null | awk '/BEGIN/,/END/{ if(/BEGIN/){c=""};c=c $0 "\n"}END{print c}' > /tmp/ca.crt || true
-    - cat /tmp/ca.crt
     - keytool -importcert -noprompt -trustcacerts -alias artifactory -file /tmp/ca.crt -keystore local -storepass changeit
     - mvn $MAVEN_CLI_OPTS deploy
   only:
