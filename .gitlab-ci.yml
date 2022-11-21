@@ -1,5 +1,18 @@
 variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+
+  MAVEN_CLI_OPTS: >-
+    --batch-mode
+    --errors
+    --fail-at-end
+    --show-version
+    --no-transfer-progress
+    -DinstallAtEnd=true
+    -DdeployAtEnd=true
+    -DproxySet=true
+    -DproxyHost=isproxy
+    -DproxyPort=8082
+    -s .m2/settings.xml
+
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
 
 default:
