@@ -8,11 +8,11 @@ default:
     - shared
 
 
-cache:
-  paths:
-    - .m2/repository/
-    - target/
-    - .sonar/cache
+#cache:
+#  paths:
+#    - .m2/repository/
+#    - target/
+#    - .sonar/cache
 
 stages:          # List of stages for jobs, and their order of execution
   - build
