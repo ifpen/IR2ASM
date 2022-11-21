@@ -58,6 +58,7 @@ deploy:
   script:
     - echo quit | openssl s_client -showcerts -servername gitlabpremium.ifpen.fr -connect gitlabpremium.ifpen.fr:443 2>/dev/null | awk '/BEGIN/,/END/{ if(/BEGIN/){c=""};c=c $0 "\n"}END{print c}' > /tmp/ca.crt || true
     - keytool -importcert -noprompt -trustcacerts -alias artifactory -file /tmp/ca.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+    - echo ${CI_JOB_TOKEN}
     - mvn $MAVEN_CLI_OPTS deploy
   only:
     - master
