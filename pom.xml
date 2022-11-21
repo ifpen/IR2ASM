@@ -39,17 +39,17 @@
     <repositories>
         <repository>
             <id>gitlab-maven</id>
-            <url>https://gitlabpremium.ifpen.fr/api/v4/groups/31/-/packages/maven</url>
+            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
         </repository>
     </repositories>
     <distributionManagement>
         <repository>
             <id>gitlab-maven</id>
-            <url>https://gitlabpremium.ifpen.fr/api/v4/projects/73/packages/maven</url>
+            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
         </repository>
         <snapshotRepository>
             <id>gitlab-maven</id>
-            <url>https://gitlabpremium.ifpen.fr/api/v4/projects/73/packages/maven</url>
+            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
         </snapshotRepository>
     </distributionManagement>
 
