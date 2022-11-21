@@ -11,6 +11,8 @@ variables:
     -DproxySet=true
     -DproxyHost=isproxy
     -DproxyPort=8082
+    -Dhttp.keepAlive=false
+    -Dmaven.wagon.http.pool=false
     -s .m2/settings.xml
 
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
@@ -28,22 +30,10 @@ default:
 #    - .sonar/cache
 
 stages:          # List of stages for jobs, and their order of execution
-  - build
   - test
-  - quality
   - deploy
 
-build:
-  stage: build
-  script:
-    - mvn $MAVEN_CLI_OPTS compile
-
 test:
-  stage: test
-  script:
-    - mvn $MAVEN_CLI_OPTS test
-
-lint:
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dsonar.projectKey=spectrum-IR -Dsonar.java.binaries=target
