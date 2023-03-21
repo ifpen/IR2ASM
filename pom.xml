@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.ifpen</groupId>
-    <artifactId>spectrum.ir</artifactId>
+    <groupId>fr.ifpen.allotropeconverters</groupId>
+    <artifactId>ir2asm</artifactId>
     <version>1.1-snapshot</version>
     <dependencies>
         <dependency>
@@ -39,31 +39,21 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.13.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.13.4</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.ifpen.allotropeconverters</groupId>
+            <artifactId>ASMUtils</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>gitlab-maven</id>
-            <url>${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>11</maven.compiler.release>
-        <sonar.projectKey>Spectrum-IR</sonar.projectKey>
-        <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
     </properties>
 
     <build>
@@ -74,7 +64,7 @@
                 <version>1.1.2</version>
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/resources/</sourceDirectory>
-                    <targetPackage>fr.ifpen.spectrum.ir.schema</targetPackage>
+                    <targetPackage>fr.ifpen.allotropeconverters.ir.schema</targetPackage>
                     <refFragmentPathDelimiters>#/</refFragmentPathDelimiters>
                 </configuration>
                 <executions>
