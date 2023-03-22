@@ -11,10 +11,21 @@ import fr.ifpen.allotropeconverters.ir.spc.SpcFileToAllotropeMapper;
 import java.io.IOException;
 import java.util.List;
 
+
+/**
+ * A converter transforming binary FTIR data into ASM compliant JSON objects
+ */
 public class InfraredToAllotropeJsonConverter {
 
     private final SpcFileToAllotropeMapper spcFileToAllotropeMapper = new SpcFileToAllotropeMapper();
 
+
+    /**
+     * Converts a FTIR file
+     * @param filePath The path of the file to be converted.
+     * @return A list of ASM-compliant JSON objects, representing the data.
+     * @throws IOException Thrown in case of an error during parsing.
+     */
     public List<ObjectNode> convertFile(String filePath) throws IOException {
 
         List<FtirEmbedSchema> schemasInFile = spcFileToAllotropeMapper.mapToFtirEmbedSchema(filePath);
