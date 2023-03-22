@@ -6,7 +6,34 @@
 
     <groupId>fr.ifpen.allotropeconverters</groupId>
     <artifactId>ir2asm</artifactId>
-    <version>1.1-snapshot</version>
+    <version>1.2</version>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A Java converter from FTIR proprietary data to Allotrope's ASM data</description>
+    <url>https://github.com/ifpen/IR2ASM</url>
+
+    <licenses>
+        <license>
+            <name>CeCILL, version 2.1</name>
+            <url>https://opensource.org/license/cecill-2-1/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Maxime Visconte</name>
+            <email>maxime.visconte@ifpen.fr</email>
+            <organization>IFPEN</organization>
+            <organizationUrl>https://www.ifpenergiesnouvelles.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/ifpen/IR2ASM.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ifpen/IR2ASM.git</developerConnection>
+        <url>https://github.com/ifpen/IR2ASM/tree/main</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -106,4 +133,97 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <version.maven-release-plugin>3.0.0-M7</version.maven-release-plugin>
+                <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
+                <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-release-plugin</artifactId>
+                            <version>${version.maven-release-plugin}</version>
+                            <configuration>
+                                <tagNameFormat>@{project.version}</tagNameFormat>
+                            </configuration>
+                        </plugin>
+                        <!-- The key's name & passphrase are configured via GitHub's setup-java action. -->
+                        <plugin>
+                            <artifactId>maven-gpg-plugin</artifactId>
+                            <version>${version.maven-gpg-plugin}</version>
+                            <executions>
+                                <execution>
+                                    <id>sign-artifacts</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>sign</goal>
+                                    </goals>
+                                    <configuration>
+                                        <!-- This is required to make sure the plugin does not stop asking for -->
+                                        <!-- user input on the passphrase -->
+                                        <gpgArguments>
+                                            <arg>--pinentry-mode</arg>
+                                            <arg>loopback</arg>
+                                        </gpgArguments>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.sonatype.plugins</groupId>
+                            <artifactId>nexus-staging-maven-plugin</artifactId>
+                            <version>${version.nexus-staging-maven-plugin}</version>
+                            <extensions>true</extensions>
+                            <configuration>
+                                <serverId>ossrh</serverId>
+                                <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
+                                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            </configuration>
+                        </plugin>
+
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
