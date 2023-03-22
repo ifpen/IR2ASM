@@ -12,11 +12,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Maps the contents of a SPC FTIR file to the ASM data structure.
+ */
 public class SpcFileToAllotropeMapper {
 
     private static final String UNITLESS = "(unitless)";
     private final FileParser fileParser = new FileParser();
 
+
+    /**
+     * Maps the contents of a SPC FTIR file to the ASM data structure.
+     * @param filePath Path of the file to be converted
+     * @return A list of Allotrope FTIR data structures
+     * @throws IOException An error occured during file parsing.
+     */
     public List<FtirEmbedSchema> mapToFtirEmbedSchema(String filePath) throws IOException {
 
         File inputFile = new File(filePath);

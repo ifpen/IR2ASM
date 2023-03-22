@@ -15,7 +15,7 @@ class FileParser {
     private final HeaderParser headerParser = new HeaderParser();
     private final LogParser logParser = new LogParser();
 
-    public SpcFile parseFile(File inputFile) throws IOException {
+    SpcFile parseFile(File inputFile) throws IOException {
         LittleEndianDataInputStream in = new LittleEndianDataInputStream(new BufferedInputStream(
                 new FileInputStream(inputFile)));
 

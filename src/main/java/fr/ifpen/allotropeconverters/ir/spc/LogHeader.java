@@ -1,6 +1,6 @@
 package fr.ifpen.allotropeconverters.ir.spc;
 
-public record LogHeader(
+record LogHeader(
         long logSize,
         long memorySize,
         long textOffset,
